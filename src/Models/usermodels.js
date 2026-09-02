@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
         unique : true,
     },
     password :{
-        type :Number,
+        type :String,
         required : true, 
     },
     token:{
@@ -24,4 +24,4 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema);
 
-export {user} ;
+export {User} 
