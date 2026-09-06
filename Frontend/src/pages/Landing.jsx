@@ -24,11 +24,11 @@ export default function LandingPage() {
 
     <div className="landingMainContainer">
         <div> 
-          <h1><span style={{ color: "#FF9839" }}>Connect</span> with loved ones</h1>
+          <h1><span style={{ color: "#FF9839" }}>Connect</span> with your loved Ones</h1>
 
-          <p>MeetFlow is a video conferencing platform that allows you to connect with your loved ones</p> 
+          <p>MeetFlow is a video conferencing platform that allows you to connect with your loved ones anytime, anywhere.</p> 
           <div role="button" >
-            <Link to="/home">Get Started</Link>
+            <Link to="/auth">Get Started</Link>
           </div>
         </div>
         
