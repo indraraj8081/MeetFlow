@@ -28,7 +28,7 @@ export default function LandingPage() {
 
           <p>MeetFlow is a video conferencing platform that allows you to connect with your loved ones anytime, anywhere.</p> 
           <div role="button" >
-            <Link to="/auth">Get Started</Link>
+            <Link to={"/auth"}>Get Started</Link>
           </div>
         </div>
         
