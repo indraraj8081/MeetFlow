@@ -1,154 +1,170 @@
-import e from 'cors';
-import { connect } from 'mongoose';
-import React ,{ref, useEffect} from 'react'
-import { Await } from 'react-router-dom';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  TextField,
+  Button,
+} from '@mui/material';
 
-const serverUrl = "http://localhost:8000";
+import "../styles/videoComponenet.css";
 
-var connection = {};
+const server_url = "http://localhost:8000"
 
-const peerConnectionConfig = {
-    "iceServers": [
-        { "urls": "stun:stun.l.google.com:19302" }
+var connections = {};
+
+
+const peerConfigConnection = {
+    "iceServers" : [ 
+        {"urls": "stun : stun.l.google.com:19302"}
     ]
-};
 
-
+}
 
 export default function VideoMeetComponent() {
-  
-  let socketId= useRef(null)
-  let socketIdRef = useRef(null);
 
-  // Reference to the local video element
-  // humra video yeha pa dikhega aur dusrer ke liye ak array generate karenge jisme dusre ke video dikhega
-  let localVideoRef = useRef(null);
-  
-  // Reference to the remote video elements
-  let [videoAvailable, setVideoAvailable] = useState(true);
+var socketRef = useRef();
+let socketIdRef = useRef();
 
-  let [audioAvailable, setAudioAvailable] = useState(true);
-   
-  let [video, setVideo] = useState();
+let localVideoRef = useRef();
 
-  let [audio, setAudio] = useState();
+let [videoAvailable, setVideoAvailable] = useState(true);
 
-  let [screen, setScreen] = useState();
+let [ audioAvailable, setAudioAvailable] = useState(true);
 
-  let [showModel, setShowModel] = useState();
+let [video , setVideo] = useState();
 
-  let [screenAvailable, setScreenAvailable]= useState();
+let [audio, setAudio] = useState();
 
-  let [messages, setMessages]= useState([]);
+let [screen, setScreen] = useState();
+let[showModel,setModel ] = useState();
 
-  let [message, setMessage]= useState("");
-  
-  let [newMessage, setNewMessage]= useState(0);
+let [screenAvailable ,setScreenAvailable]= useState();
 
-  let [askForUserName, setAskForUserName]= useState(true);
+let [messages , setMessages]= useState([]);
 
-  let [userName, setUserName]= useState("");
+let [message, setMessage]= useState("");
 
-  const videoRef = useRef(null);
+let[newMessages, setNewMessages] = useState(0);
 
-  let [videos , setVideos]= useState([]);
+let [askForUserName , setAskForUserName] = useState(true);
 
-  const getPermissions = async()=>{
+let [ username , setUsername] = useState("");
+
+const videoRef = useRef([]);
+
+const [videos, setVideos]= useState([]);
+
+//TODO
+// if(isChrome() === false){
+
+// }
+const getPermissions = async () => {
+  try{
+     const videoPermissions = await navigator.mediaDevices.getUserMedia({video : true});
+
+     if(videoPermissions) {
+       setVideoAvailable(true);
+
+     }else{
+      setVideoAvailable(false);
+     }
+
+   const audioPermissions = await navigator.mediaDevices.getUserMedia({audio : true});
+
+     if(audioPermissions) {
+       setAudioAvailable(true);
+
+     }else{
+      setAudioAvailable(false);
+     }
+    
+    // screen sharing available
+    if(navigator.mediaDevices.getDisplayMedia) {
+      setScreenAvailable(true)
+    }else{
+      setScreenAvailable(false);
+    }
+
+    if(videoAvailable || audioAvailable){
+      const userMediaStream = await navigator.mediaDevices.getUserMedia({video : videoAvailable, audio : audioAvailable});
+    
+    
+    
+    if(userMediaStream) {
+      Window.localStream = userMediaStream;
+      if(localVideoRef.current) {
+        localVideoRef.current.srcObject = userMediaStream;
+      }
+    }
+    }
+
+
+  }catch(err){
+    console.log(err);
+  }
+}
+
+
+useEffect(() =>{
+  getPermissions();
+}, [])
+
+// ye function ye karega agr koi ak stream me audio, video and mute kiya hai to har jagha wahi bhejga any thing agr kuch band kar rhe hai to sare media me ye band kar do
+let getUserMediaSuccess = (stream) => {
+
+}
+
+let getUserMedia = () =>{
+  if((video && videoAvailable) || (audio && audioAvailable)) {
+    navigator.mediaDevices.getUserMedia({ video : video , audio : audio})
+    .then(()=>{getUserMediaSuccess}) //ToDo getuserMediaSuccess
+    .then((stream)=>{})
+    .catch((e) => console.log(e));
+    
+  }else{
     try{
-        const videoPermission = await navigator.mediaDevices.getUserMedia({video:true})
-        if(videoPermission){
-            setVideoAvailable(true);
-        }else{
-            setVideoAvailable(false);
-        }
-        const audioPermission = await navigator.mediaDevices.getUserMedia({audio:true})
-        if(audioPermission){
-            setAudioAvailable(true);
-        }else{
-            setAudioAvailable(false);
-        }
-        if(navigator.mediaDevices.getDisplayMedia){
-            setScreenAvailable(true);
-        }else{
-            setScreenAvailable(false);
-        }
+         let tracks = localVideoRef.current.srcObject.getTracks();
+         tracks.forEach(track => track.stop())
+    }catch{
 
-        if(videoAvailable || audioAvailable){
-           const userMediaStream = await navigator.mediaDevices.getUserMedia({video:videoAvailable , audio: audioAvailable});
-           if(userMediaStream){
-            window.localStream = userMediaStream;
-            if(localVideoRef.current){
-                localVideoRef.current.srcObject = userMediaStream;
-            }
-           }
-        } 
-
-    }catch (err){
-      console.log(err);
     }
   }
-  
+}
 
-  // TODO: Add the logic for handling video and audio streams, peer connections, and messaging here.
-  useEffect(()=>{
-    getPermissions();
-  },[])
-
-   let getUserMediaSucess =(stream) ={
-
+useEffect(()=> {
+   if(video !== undefined && audio !== undefined){
+    getUserMedia();
    }
+}, [audio, video])
 
 
+let getMedia = () =>{
+  setVideo(videoAvailable);
+  setAudio(audioAvailable);
+  // connectToSocketServer();
+}
 
+let connect = () =>{
+  setAskForUserName(false);
+  getMedia();
+}
 
-   let getUserMedia =()=>{
-    if((video&& videoAvailable) || (audio && audioAvailable)){
-         navigator.mediaDevices.getUserMedia({video: video , audio : audio})
-         .then(getUserMediaSuccess) // tod0: getuserMediasucess
-         .then((stream)=>{})
-         .catch((err)=>
-            console.log(error)
-        )    
-    }else{
-            try{
-              let tracks = localVideoRef.current.srcObject.getTracks();
-              tracks.forEach(track => track.stop())
-            }
-            catch(e){
-
-            }
-        }
-  }
-  useEffect(()=>{
-     if(video ===undefined && audio === undefined){
-        getUserMedia();
-     }
-  },[])
-    
-
-  let getMedia =()=>{
-    setVideo(videoAvailable);
-    setAudio(audioAvailable);
-    // connectToSocketServer();
-  }
   return (
     <div>
-
-         {askForUserName ===true?
-         <div>
-            <h2>Enter the Lobby</h2>
-            <TextField id="outlined-basic" label="Username" variant="outlined" value={userName} onChange={e => setUserName(e.target.value)}/>
-            <Button variant="contained" onclick={connect}>Connect</Button>
+        {askForUserName === true ?
+      
+      <div>
+        <h2>Enter into Lobby</h2>
+        <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
+        <Button variant="contained" onClick={connect}>Connect</Button>
 
         <div>
-            <video ref={localVideoRef} autoPlay muted> </video>
+            <video ref={localVideoRef} autoPlay muted></video>
+
         </div>
-
-         </div> :<></>
-        }
-
-    </div>
-
-
+        </div> : <></>
+    }
+     </div>
   )
 }
+
+
+// isme hum implenet karenga video shi se chal rha hai ya nhi aur bhi feature add karenga related to video , audio and mutes connectTo Socket or manything
