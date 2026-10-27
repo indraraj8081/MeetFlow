@@ -3,7 +3,7 @@ import {Route, BrowserRouter as Router, Routes} from "react-router-dom"
 import './App.css'
 import LandingPage from './pages/Landing.jsx'
 import Authentication from './pages/Authentication.jsx'
-import { AuthProvider } from "./contexts/AuthContext.jsx"
+import { AuthProvider } from "./contexts/authContext.jsx";
 import VideoMeetComponent from "./pages/VideoMeet.jsx"
 
 
