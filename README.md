@@ -1,16 +1,116 @@
-# React + Vite
+# MeetFlow — Real-Time Video Conferencing Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MeetFlow is a full-stack video conferencing application designed to make online communication simple and convenient. It provides a platform for users to connect and participate in virtual meetings.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **User Authentication:** User registration and login.
+- **Video Conferencing:** Support for real-time video meeting functionality.
+- **Audio and Video:** Designed for audio and video communication.
+- **Meeting Management:** Meeting-related functionality.
+- **Real-Time Communication:** Built with technologies that support real-time interactions.
+- **Responsive Interface:** A React-based user interface.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Frontend**
+- React.js
+- JavaScript
+- HTML5
+- CSS3
+- Vite
 
-## Expanding the ESLint configuration
+**Backend**
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Socket.IO
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Tools**
+- Git and GitHub
+- VS Code
+- npm
+
+## 📁 Project Structure
+
+```text
+MeetFlow/
+├── Frontend/
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.js
+├── Backend/
+│   ├── src/
+│   │   ├── Models/
+│   │   ├── controllers/
+│   │   └── routes/
+│   ├── package.json
+│   └── .gitignore
+└── README.md
+```
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/indraraj8081/MeetFlow.git
+cd MeetFlow
+```
+
+### 2. Set Up the Backend
+
+```bash
+cd Backend
+npm install
+```
+
+Create a `.env` file inside the `Backend` directory:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+```
+
+Replace the placeholder with your MongoDB connection string. Add any other environment variables required by your backend configuration.
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+### 3. Set Up the Frontend
+
+Open a new terminal:
+
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+
+Open the local URL displayed by Vite in your browser, usually `http://localhost:5173`.
+
+## 🔐 Environment Variables
+
+Keep credentials and secrets in environment files. Never commit `.env` files, database passwords, or authentication secrets to GitHub.
+
+Ensure your `.gitignore` excludes environment files and `node_modules`.
+
+## 🎯 Project Objective
+
+The goal of MeetFlow is to provide a convenient platform for virtual communication while demonstrating full-stack development skills, including frontend development, backend APIs, database integration, authentication, and real-time communication.
+
+## 👨‍💻 Developer
+
+**Indraraj Singh**
+
+GitHub: [@indraraj8081](https://github.com/indraraj8081)
+
+Project Repository: [MeetFlow](https://github.com/indraraj8081/MeetFlow)
+
+---
+
+*MeetFlow — Connect. Communicate. Collaborate.*
